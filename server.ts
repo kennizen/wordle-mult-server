@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import app from "./app";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import { socketHandler } from "./app/socket/socket";
 
 dotenv.config();
 
@@ -13,7 +14,7 @@ const io = new Server(server, {
   },
 });
 
-io.on("connection", () => console.log("socket connected"));
+io.on("connection", socketHandler);
 
 server.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
