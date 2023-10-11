@@ -18,6 +18,6 @@ export function addWord(req: Request, res: Response) {
 
   db.run(`INSERT INTO rooms VALUES (?, ?)`, [roomId, word], (err: Error, result: RunResult) => {
     if (err) res.status(400).send(err.message);
-    else res.status(200).send("Word addition successfull");
+    else res.status(200).send("Word addition successful");
   });
 }
