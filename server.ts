@@ -22,20 +22,20 @@ export const db = new sqlite3.Database("game.db", (err) => {
   console.log("connected to database");
 });
 
-function handleCreateTable() {
-  db.run(
-    `CREATE TABLE rooms (
-    room_id PRIMARY KEY NOT NULL,
-    game_word VARCHAR(20) NOT NULL
-  )`,
-    (err: Error) => {
-      console.log(err.message);
-      if (err) return;
-    }
-  );
-}
+// function handleCreateTable() {
+//   db.run(
+//     `CREATE TABLE rooms (
+//     room_id PRIMARY KEY NOT NULL,
+//     game_word VARCHAR(20) NOT NULL
+//   )`,
+//     (err: Error) => {
+//       console.log(err.message);
+//       if (err) return;
+//     }
+//   );
+// }
 
-handleCreateTable();
+// handleCreateTable();
 
 function registerHandlers(socket: Socket) {
   joinUserToRooms(io, socket);
