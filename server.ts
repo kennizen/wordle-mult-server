@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import app, { sqlite3 } from "./app";
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
-import { joinUserToRooms, startGame } from "./app/socket/socketHandlers";
+import { joinUserToRooms, playerReady, startGame } from "./app/socket/socketHandlers";
 
 dotenv.config();
 
@@ -40,6 +40,7 @@ export const db = new sqlite3.Database("game.db", (err) => {
 function registerHandlers(socket: Socket) {
   joinUserToRooms(io, socket);
   startGame(io, socket);
+  playerReady(io, socket);
 }
 
 io.on("connection", registerHandlers);
