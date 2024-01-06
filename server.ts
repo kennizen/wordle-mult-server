@@ -1,7 +1,8 @@
 import dotenv from "dotenv";
-import app from "./app";
+import app, { sqlite3 } from "./app";
 import { createServer } from "http";
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
+import { joinUserToRooms, playerReady, startGame } from "./app/socket/socketHandlers";
 
 dotenv.config();
 
@@ -13,7 +14,36 @@ const io = new Server(server, {
   },
 });
 
-io.on("connection", () => console.log("socket connected"));
+export const db = new sqlite3.Database("game.db", (err) => {
+  if (err) {
+    console.log(err);
+    return;
+  }
+  console.log("connected to database");
+});
+
+// function handleCreateTable() {
+//   db.run(
+//     `CREATE TABLE rooms (
+//     room_id PRIMARY KEY NOT NULL,
+//     game_word VARCHAR(20) NOT NULL
+//   )`,
+//     (err: Error) => {
+//       console.log(err.message);
+//       if (err) return;
+//     }
+//   );
+// }
+
+// handleCreateTable();
+
+function registerHandlers(socket: Socket) {
+  joinUserToRooms(io, socket);
+  startGame(io, socket);
+  playerReady(io, socket);
+}
+
+io.on("connection", registerHandlers);
 
 server.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);

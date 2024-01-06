@@ -1,14 +1,16 @@
 import express from "express";
 import cors from "cors";
-import userRouter from "./routes/user";
+import gameRouter from "./routes/game";
+import { verbose } from "sqlite3";
 
 const app = express();
+export const sqlite3 = verbose();
 
 // global middlewares
 app.use(cors());
 app.use(express.json());
 
 // routes
-app.use("/", userRouter);
+app.use("/", gameRouter);
 
 export default app;
